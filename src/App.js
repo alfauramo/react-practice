@@ -37,9 +37,9 @@ const App = props => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search 
+      <Search
         onSearch={handleSearch}
-        search={searchTerm} 
+        search={searchTerm}
       />
 
       <hr />

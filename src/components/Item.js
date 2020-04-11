@@ -1,8 +1,6 @@
 import React from 'react';
 
-const Item = props => {
-    
-    const {item} = props;
+const Item = ({ item }) => {
 
     return (
         <div>
