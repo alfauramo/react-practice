@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import List from './components/List';
 import Search from './components/Search';
+import initialStories from './constants/Stories'
+
+const useSemiPersistentState = (key, initialState) => {
+  const [value, setValue] = useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value, key]);
+
+  return [value, setValue];
+}
 
 const App = props => {
-
-  const useSemiPersistentState = (key, initialState) => {
-    const [value, setValue] = useState(
-      localStorage.getItem(key) || initialState
-    );
-
-    useEffect(() => {
-      localStorage.setItem(key, value);
-    }, [value, key]);
-
-    return [value, setValue];
-  }
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -25,24 +26,14 @@ const App = props => {
     'React'
   );
 
-  const stories = [
-    {
-      title: 'React',
-      url: 'https://reactjs.org/',
-      author: 'Jordan Walke',
-      num_comments: 3,
-      points: 3,
-      objectID: 0
-    },
-    {
-      title: 'Redux',
-      url: 'https://redux.js.org',
-      author: 'Dan Abramov, Andrew Clark',
-      num_comments: 2,
-      points: 5,
-      objectID: 1
-    }
-  ];
+  const [stories, setStories] = useState(initialStories);
+
+  const handleRemoveStory = item => {
+    const newStories = stories.filter(
+      story => item.objectID !== story.objectID
+    );
+    setStories(newStories)
+  }
 
   const searchedStories = stories.filter(
     story => story.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -60,7 +51,7 @@ const App = props => {
       <hr />
 
       {/* creating an instance of List component */}
-      <List stories={searchedStories} />
+      <List stories={searchedStories} onRemoveItem={handleRemoveStory}/>
     </div>
   );
 }

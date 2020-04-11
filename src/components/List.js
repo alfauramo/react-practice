@@ -1,10 +1,15 @@
 import React from 'react';
 import Item from './Item';
 
-const List = ({ stories }) => {
+const List = ({ stories, onRemoveItem }) => {
 
   return (
-    stories.map((item, i) => <Item key={i} item={item} />)
+    stories.map((item, i) =>
+      <Item
+        key={i}
+        item={item}
+        onRemoveItem={onRemoveItem}
+      />)
   );
 
 }
