@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Input = props => {
+const InputWithLabel = props => {
 
-    const {id, label, value, onInputChange, type = 'text'} = props;
+    const {id, value, onInputChange, type = 'text', children} = props;
 
     return(
         <>
-            <label htmlFor={id}>{label}</label>
+            <label htmlFor={id}>{children}</label>
 
             <input
                 id={id}
@@ -18,4 +18,4 @@ const Input = props => {
     );
 };
 
-export default Input;
+export default InputWithLabel;

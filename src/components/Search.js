@@ -1,15 +1,17 @@
 import React from 'react';
-import Input from './Input';
+import InputWithLabel from './InputWithLabel';
 
 const Search = ({ search, onSearch }) => {
 
     return (
-        <Input
+        <InputWithLabel
             id="search"
             label="Search"
             value={search}
             onInputChange={onSearch}
-        />
+        >
+            <strong>Search: </strong>
+        </InputWithLabel>
     );
 }
 
