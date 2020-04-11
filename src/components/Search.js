@@ -8,6 +8,7 @@ const Search = ({ search, onSearch }) => {
             id="search"
             label="Search"
             value={search}
+            isFocused
             onInputChange={onSearch}
         >
             <strong>Search: </strong>
