@@ -4,14 +4,16 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const renderRComponent = (component, className) => {
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+  const wrappers = document.getElementsByClassName(className);
+  if (wrappers && wrappers.length > 0)
+      Array.from(wrappers)
+          .forEach((el, i) =>{
+              const c = React.createElement(component, {...el.dataset});
+              ReactDOM.render(c, el);
+          });
+}
+
+renderRComponent(App, 'hacker-stories');
 serviceWorker.unregister();
