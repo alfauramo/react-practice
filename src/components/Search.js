@@ -3,7 +3,7 @@ import React from 'react';
 const Search = ({ search, onSearch }) => {
 
     return (
-        <div>
+        <>
             <label htmlFor="search">Search: </label>
             <input
                 id="search"
@@ -11,7 +11,7 @@ const Search = ({ search, onSearch }) => {
                 value={search}
                 onChange={onSearch}
             />
-        </div>
+        </>
     );
 }
 
