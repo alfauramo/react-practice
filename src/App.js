@@ -37,7 +37,10 @@ const App = props => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search onSearch={handleSearch} />
+      <Search 
+        onSearch={handleSearch}
+        search={searchTerm} 
+      />
 
       <hr />
 

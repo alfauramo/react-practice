@@ -2,7 +2,7 @@ import React from 'react';
 
 const Search = props => {
 
-    const {onSearch} = props;
+    const {onSearch, searchTerm} = props;
 
     return (
         <div>
@@ -10,6 +10,7 @@ const Search = props => {
             <input
                 id="search"
                 type="text"
+                value={searchTerm}
                 onChange={onSearch}
             />
         </div>
