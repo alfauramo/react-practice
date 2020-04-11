@@ -4,18 +4,26 @@ import Search from './components/Search';
 
 const App = props => {
 
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem('search') || 'React'
-  );
+  const useSemiPersistentState = (key, initialState) => {
+    const [value, setValue] = useState(
+      localStorage.getItem(key) || initialState
+    );
 
-  useEffect(() => {
-    localStorage.setItem('search', searchTerm);
-  }, [searchTerm]);
+    useEffect(() => {
+      localStorage.setItem(key, value);
+    }, [value, key]);
 
+    return [value, setValue];
+  }
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState(
+    'search',
+    'React'
+  );
 
   const stories = [
     {
