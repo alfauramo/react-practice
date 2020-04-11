@@ -4,7 +4,7 @@ import Item from './Item';
 const List = ({ stories }) => {
 
   return (
-    stories.map((item, i) => <Item key={i} {...item} />)
+    stories.map((item, i) => <Item key={i} item={item} />)
   );
 
 }
