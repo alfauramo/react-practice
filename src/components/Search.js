@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Search = ({ onSearch, searchTerm }) => {
+const Search = ({ search, onSearch }) => {
 
     return (
         <div>
@@ -8,7 +8,7 @@ const Search = ({ onSearch, searchTerm }) => {
             <input
                 id="search"
                 type="text"
-                value={searchTerm}
+                value={search}
                 onChange={onSearch}
             />
         </div>
