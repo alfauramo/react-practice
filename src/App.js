@@ -4,6 +4,13 @@ import Search from './components/Search';
 import initialStories from './constants/Stories'
 import Reducer from './components/Reducer';
 
+const getAsyncStories = () =>
+  new Promise(resolve => setTimeout(
+    () => resolve({ data: { stories: initialStories } }),
+    2000
+  )
+  );
+
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = useState(
     localStorage.getItem(key) || initialState
@@ -18,43 +25,29 @@ const useSemiPersistentState = (key, initialState) => {
 
 const App = props => {
 
-  const handleSearch = event => {
-    setSearchTerm(event.target.value);
-  };
-
   const [searchTerm, setSearchTerm] = useSemiPersistentState(
     'search',
     'React'
   );
 
-  const getAsyncStories = () =>
-    new Promise(resolve => 
-        setTimeout(
-          () => resolve({ data: { stories: initialStories }}),
-          2000
-        )
-    );
-
   const [stories, dispatchStories] = useReducer(
     Reducer,
-    []
+    { data: [], isLoading: false, isError: false }
   );
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
   useEffect(() => {
-    setIsLoading(true);
+    dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
     getAsyncStories()
       .then(result => {
         dispatchStories({
-          type: 'SET_STORIES',
+          type: 'STORIES_FETCH_SUCCESS',
           payload: result.data.stories,
         });
-        setIsLoading(false);
       })
-      .catch(() => setIsError(true));
+      .catch(() =>
+        dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
+      );
   }, []);
 
   const handleRemoveStory = item => {
@@ -64,9 +57,13 @@ const App = props => {
     })
   }
 
-  const searchedStories = stories.filter(
+  const searchedStories = stories.data.filter(
     story => story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <div>
@@ -79,16 +76,16 @@ const App = props => {
 
       <hr />
 
-      {isError && <p>Something went wrong ...</p>}
+      {stories.isError && <p>Something went wrong ...</p>}
 
-      {isLoading ? (
+      {stories.isLoading ? (
         <p>Loading ...</p>
       ) : (
-        <List 
-          stories={searchedStories} 
-          onRemoveItem={handleRemoveStory} 
-        />
-      )
+          <List
+            stories={searchedStories}
+            onRemoveItem={handleRemoveStory}
+          />
+        )
       }
     </div>
   );
