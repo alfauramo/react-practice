@@ -1,18 +1,27 @@
 import React from 'react';
 import InputWithLabel from './InputWithLabel';
 
-const Search = ({ search, onSearch }) => {
+const Search = ({ searchTerm, onSearchInput, onSearchSubmit }) => {
 
     return (
-        <InputWithLabel
-            id="search"
-            label="Search"
-            value={search}
-            isFocused
-            onInputChange={onSearch}
-        >
-            <strong>Search: </strong>
-        </InputWithLabel>
+        <>
+            <InputWithLabel
+                id="search"
+                label="Search"
+                value={searchTerm}
+                isFocused
+                onInputChange={onSearchInput}
+            >
+                <strong>Search: </strong>
+            </InputWithLabel>
+            <button
+                type="button"
+                disabled={!searchTerm}
+                onClick={onSearchSubmit}
+            >
+                Submit
+            </button>
+        </>
     );
 }
 
