@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import List from './components/List';
 import Search from './components/Search';
-import initialStories from './constants/Stories'
+import API_ENDPOINT from './constants'
 import Reducer from './components/Reducer';
-
-const getAsyncStories = () =>
-  new Promise(resolve => setTimeout(
-    () => resolve({ data: { stories: initialStories } }),
-    2000
-  )
-  );
 
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = useState(
@@ -25,6 +18,9 @@ const useSemiPersistentState = (key, initialState) => {
 
 const App = props => {
 
+
+  console.log(API_ENDPOINT);
+
   const [searchTerm, setSearchTerm] = useSemiPersistentState(
     'search',
     'React'
@@ -37,17 +33,17 @@ const App = props => {
 
   useEffect(() => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
-
-    getAsyncStories()
+    fetch(`${API_ENDPOINT}react`)
+      .then(response => response.json())
       .then(result => {
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
-          payload: result.data.stories,
-        });
+          payload: result.hits,
+        })
       })
-      .catch(() =>
+      .catch(() => {
         dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-      );
+      })
   }, []);
 
   const handleRemoveStory = item => {
