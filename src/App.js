@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import List from './components/List';
 import Search from './components/Search';
 import initialStories from './constants/Stories'
+import Reducer from './components/Reducer';
 
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = useState(
@@ -34,7 +35,11 @@ const App = props => {
         )
     );
 
-  const [stories, setStories] = useState([]);
+  const [stories, dispatchStories] = useReducer(
+    Reducer,
+    []
+  );
+
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -43,17 +48,20 @@ const App = props => {
 
     getAsyncStories()
       .then(result => {
-        setStories(result.data.stories);
+        dispatchStories({
+          type: 'SET_STORIES',
+          payload: result.data.stories,
+        });
         setIsLoading(false);
       })
       .catch(() => setIsError(true));
   }, []);
 
   const handleRemoveStory = item => {
-    const newStories = stories.filter(
-      story => item.objectID !== story.objectID
-    );
-    setStories(newStories)
+    dispatchStories({
+      type: 'REMOVE_STORY',
+      payload: item
+    })
   }
 
   const searchedStories = stories.filter(
@@ -72,7 +80,7 @@ const App = props => {
       <hr />
 
       {isError && <p>Something went wrong ...</p>}
-      
+
       {isLoading ? (
         <p>Loading ...</p>
       ) : (
