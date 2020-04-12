@@ -26,7 +26,21 @@ const App = props => {
     'React'
   );
 
-  const [stories, setStories] = useState(initialStories);
+  const getAsyncStories = () =>
+    new Promise(resolve => 
+        setTimeout(
+          () => resolve({ data: { stories: initialStories }}),
+          2000
+        )
+    );
+
+  const [stories, setStories] = useState([]);
+
+  useEffect(() => {
+    getAsyncStories().then(result => {
+      setStories(result.data.stories);
+    })
+  }, []);
 
   const handleRemoveStory = item => {
     const newStories = stories.filter(
@@ -51,7 +65,7 @@ const App = props => {
       <hr />
 
       {/* creating an instance of List component */}
-      <List stories={searchedStories} onRemoveItem={handleRemoveStory}/>
+      <List stories={searchedStories} onRemoveItem={handleRemoveStory} />
     </div>
   );
 }
