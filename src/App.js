@@ -32,8 +32,11 @@ const App = props => {
   );
 
   useEffect(() => {
+    if (!searchTerm) return;
+
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
-    fetch(`${API_ENDPOINT}react`)
+
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then(response => response.json())
       .then(result => {
         dispatchStories({
@@ -44,7 +47,7 @@ const App = props => {
       .catch(() => {
         dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
       })
-  }, []);
+  }, [searchTerm]);
 
   const handleRemoveStory = item => {
     dispatchStories({
@@ -52,10 +55,6 @@ const App = props => {
       payload: item
     })
   }
-
-  const searchedStories = stories.data.filter(
-    story => story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -78,7 +77,7 @@ const App = props => {
         <p>Loading ...</p>
       ) : (
           <List
-            stories={searchedStories}
+            stories={stories.data}
             onRemoveItem={handleRemoveStory}
           />
         )
