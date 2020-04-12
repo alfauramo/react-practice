@@ -35,11 +35,18 @@ const App = props => {
     );
 
   const [stories, setStories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    getAsyncStories().then(result => {
-      setStories(result.data.stories);
-    })
+    setIsLoading(true);
+
+    getAsyncStories()
+      .then(result => {
+        setStories(result.data.stories);
+        setIsLoading(false);
+      })
+      .catch(() => setIsError(true));
   }, []);
 
   const handleRemoveStory = item => {
@@ -64,8 +71,17 @@ const App = props => {
 
       <hr />
 
-      {/* creating an instance of List component */}
-      <List stories={searchedStories} onRemoveItem={handleRemoveStory} />
+      {isError && <p>Something went wrong ...</p>}
+      
+      {isLoading ? (
+        <p>Loading ...</p>
+      ) : (
+        <List 
+          stories={searchedStories} 
+          onRemoveItem={handleRemoveStory} 
+        />
+      )
+      }
     </div>
   );
 }
