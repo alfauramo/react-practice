@@ -5,6 +5,9 @@ import API_ENDPOINT from './constants'
 import Reducer from './components/Reducer';
 import axios from 'axios';
 
+
+import './App.css';
+
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = useState(
     localStorage.getItem(key) || initialState
@@ -68,8 +71,8 @@ const App = props => {
   };
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className="container">
+      <h1 className="hadline-primary">My Hacker Stories</h1>
 
       <SearchForm
         onSearchInput={handleSearchInput}
