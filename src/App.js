@@ -44,8 +44,7 @@ const App = props => {
       });
     } catch {
       dispatchStories({ type: 'STORIES_FETCH_FAILURE '});
-    }
-      
+    }      
   }, [url]);
 
   useEffect(() => {
