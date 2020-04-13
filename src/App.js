@@ -6,7 +6,7 @@ import Reducer from './components/Reducer';
 import axios from 'axios';
 
 
-import './App.css';
+import styles from './App.module.css';
 
 const useSemiPersistentState = (key, initialState) => {
   const [value, setValue] = useState(
@@ -26,7 +26,7 @@ const App = props => {
     'React'
   );
 
-  const[url, setUrl] = useState(
+  const [url, setUrl] = useState(
     `${API_ENDPOINT}${searchTerm}`
   )
 
@@ -35,19 +35,19 @@ const App = props => {
     { data: [], isLoading: false, isError: false }
   );
 
-  const handleFetchStories = useCallback(async() => {
+  const handleFetchStories = useCallback(async () => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    try{
+    try {
       const result = await axios.get(url);
-      
+
       dispatchStories({
         type: 'STORIES_FETCH_SUCCESS',
         payload: result.data.hits,
       });
     } catch {
-      dispatchStories({ type: 'STORIES_FETCH_FAILURE '});
-    }      
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE ' });
+    }
   }, [url]);
 
   useEffect(() => {
@@ -71,14 +71,13 @@ const App = props => {
   };
 
   return (
-    <div className="container">
-      <h1 className="hadline-primary">My Hacker Stories</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Hacker Stories</h1>
 
       <SearchForm
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
         searchTerm={searchTerm}
-        classButton="button button_large"
       />
 
       <hr />
