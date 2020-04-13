@@ -78,6 +78,7 @@ const App = props => {
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
         searchTerm={searchTerm}
+        classButton="button button_large"
       />
 
       <hr />
