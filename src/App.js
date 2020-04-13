@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import List from './components/List';
-import Search from './components/Search';
+import SearchForm from './components/SearchForm';
 import API_ENDPOINT from './constants'
 import Reducer from './components/Reducer';
 import axios from 'axios';
@@ -63,13 +63,15 @@ const App = props => {
 
   const handleSearchSubmit = event => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+
+    event.preventDefault();
   };
 
   return (
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search
+      <SearchForm
         onSearchInput={handleSearchInput}
         onSearchSubmit={handleSearchSubmit}
         searchTerm={searchTerm}
